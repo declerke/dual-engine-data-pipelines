@@ -1,0 +1,40 @@
+# Core Data Processing
+pyspark==4.1.1
+pandas==2.2.0
+numpy==1.26.4
+pyarrow==15.0.0
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.1
+plotly==5.18.0
+
+# Data Quality & Profiling
+ydata-profiling==4.6.4  # Automated profiling reports
+great-expectations==0.18.8  # Data validation
+
+# Time Series
+statsmodels==0.14.1
+prophet==1.1.5  # Facebook Prophet for forecasting
+pmdarima==2.0.4  # Auto ARIMA
+
+# Machine Learning
+scikit-learn==1.4.0
+
+# Delta Lake (optional but recommended)
+delta-spark==3.0.0
+
+# Utilities
+findspark==2.0.1
+pyyaml==6.0.1
+python-dotenv==1.0.0
+tqdm==4.66.1
+
+# Jupyter
+jupyter==1.0.0
+ipykernel==6.29.0
+ipywidgets==8.1.1
+
+# Database connectivity (optional)
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9

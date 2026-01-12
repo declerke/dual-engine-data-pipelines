@@ -1,0 +1,95 @@
+# pipeline_config.yaml - Unified Configuration for Pandas & PySpark Pipelines
+
+# Data Paths
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  cleaned_data: "data/cleaned"
+  reports: "reports"
+  figures: "reports/figures"
+  
+# Dataset Configuration
+datasets:
+  airbnb:
+    filename: "AB_NYC_2019.csv"
+    primary_date_column: "last_review"
+    target_column: "price"
+    categorical_columns:
+      - "neighbourhood_group"
+      - "neighbourhood"
+      - "room_type"
+    numeric_columns:
+      - "price"
+      - "minimum_nights"
+      - "number_of_reviews"
+      - "reviews_per_month"
+      - "calculated_host_listings_count"
+      - "availability_365"
+  
+  superstore:
+    filename: "superstore_final_dataset.csv"
+    primary_date_column: "Order Date"
+    target_column: "Sales"
+    categorical_columns:
+      - "Ship Mode"
+      - "Segment"
+      - "Country"
+      - "City"
+      - "State"
+      - "Region"
+      - "Category"
+      - "Sub-Category"
+    numeric_columns:
+      - "Sales"
+      - "Quantity"
+      - "Discount"
+      - "Profit"
+
+# Data Quality Thresholds
+quality:
+  missing_value_threshold: 0.30  # Flag columns with >30% missing
+  outlier_threshold: 3.0  # Z-score threshold
+  duplicate_action: "keep_first"  # or "remove_all"
+  
+# Spark Configuration
+spark:
+  app_name: "UsedCarsAnalysisPipeline"
+  master: "local[*]"  # Use all available cores
+  memory:
+    driver: "4g"
+    executor: "4g"
+  config:
+    - ["spark.sql.adaptive.enabled", "true"]
+    - ["spark.sql.adaptive.coalescePartitions.enabled", "true"]
+    - ["spark.serializer", "org.apache.spark.serializer.KryoSerializer"]
+    - ["spark.driver.extraJavaOptions", "-Djava.net.preferIPv4Stack=true"]
+    - ["spark.executor.extraJavaOptions", "-Djava.net.preferIPv4Stack=true"]
+
+# Time Series Configuration
+time_series:
+  train_test_split: 0.8
+  forecast_horizon: 30  # Days
+  seasonality_period: 7  # Weekly seasonality
+  
+# Modeling Configuration
+modeling:
+  random_state: 42
+  test_size: 0.2
+  cv_folds: 5
+
+# Enrichment Recommendations
+enrichment:
+  external_apis:
+    - name: "Geocoding API"
+      purpose: "Lat/Long enrichment"
+    - name: "Weather API"
+      purpose: "Historical weather data"
+    - name: "Demographics API"
+      purpose: "Population & income data"
+  
+# Reporting
+reporting:
+  generate_html: true
+  generate_pdf: false
+  include_profiling: true
+  max_categories_display: 20
