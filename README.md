@@ -1,41 +1,38 @@
 # 🚀 Dual-Engine Data Pipelines: Pandas vs. PySpark
 
-This repository demonstrates a professional data engineering workflow comparing Pandas (local memory-optimized) and PySpark (distributed computing). The pipeline processes large-scale Retail (Superstore) and Real Estate (Airbnb) datasets, moving from raw ingestion to a structured Data Warehouse design.
+A professional data engineering repository benchmarking Pandas and PySpark across high-scale Retail (Superstore) and Real Estate (Airbnb) datasets. This project demonstrates the transition from local exploratory analysis to a distributed, production-grade Data Warehouse.
 
 
 
 ---
 
 ## 🎯 Project Overview
-This project benchmarks two industry-standard processing engines across identical ETL stages. It highlights the transition from single-machine data analysis to scalable, distributed big data engineering.
+This pipeline implements identical business logic across two processing engines to evaluate performance, code complexity, and scalability. It features automated data quality audits and advanced time-series forecasting.
 
 **Pipeline Stages:**
-* **Data Ingestion:** Loading raw, messy datasets into staging environments.
-* **Data Profiling:** Automated generation of statistical quality reports.
-* **Data Cleaning:** Handling missing values, outliers, and schema enforcement.
-* **Time Series Modeling:** Forecasting trends with ARIMA and Prophet.
-* **Warehouse Design:** Converting flat files into an OLAP-ready Star Schema.
-
-
+* **Data Ingestion:** Loading raw CSV sources into a tiered Data Lake (Raw → Processed → Cleaned).
+* **Automated Profiling:** Generating comprehensive HTML reports via `ydata-profiling`.
+* **Data Quality Audit:** Enforcing schema and business rules using **Great Expectations**.
+* **Time Series Modeling:** Forecasting sales and pricing trends with **Prophet** and **ARIMA**.
+* **Warehouse Design:** Designing OLAP-ready **Star Schemas** (Fact & Dimension tables) stored in **Delta Lake** / **Parquet**.
 
 ---
 
 ## 🏗️ Project Structure
 ```text
 dual-engine-data-pipelines/
-├── config/               
-├── data/                 
+├── config/               # Pipeline and Spark configuration (YAML)
+├── data/                 # Tiered storage: Raw, Processed, and Cleaned
 ├── notebooks/
-│   ├── pandas/           
-│   └── pyspark/          
-├── reports/              
-│   ├── figures/          
-│   └── html/             
-├── src/                  
-├── tests/                
-├── bin/                  
-├── environment.yml       
-└── requirements.txt      
+│   ├── pandas/           # Pandas-based processing (01-05)
+│   └── pyspark/          # PySpark-based processing (01-05)
+├── reports/              # Generated Artifacts
+│   ├── figures/          # Forecast plots and correlation heatmaps
+│   └── html/             # ydata-profiling and Quality Audit reports
+├── src/                  # Modular pipeline logic
+├── tests/                # Unit tests and validation scripts
+├── bin/                  # Helper binaries and environment scripts
+└── environment.yml       # Conda environment definition
 ```
 
 ---
@@ -51,21 +48,36 @@ dual-engine-data-pipelines/
 
 ---
 
+## 🛠️ Technical Stack
+
+| Category | Tools |
+| :--- | :--- |
+| **Core Processing** | PySpark 4.1.1, Pandas 2.2.0, NumPy, PyArrow |
+| **Quality & Profiling** | Great Expectations, ydata-profiling |
+| **Time Series** | Prophet, Statsmodels, pmdarima |
+| **Visualization** | Matplotlib, Seaborn, Plotly |
+| **Database/Storage** | Delta Lake, SQLAlchemy, Parquet |
+
+---
+
 ## 🔧 Installation & Setup
 
 ### Prerequisites
-* Python 3.11 (Required for PySpark 3.5+)
-* Java 17 (Specifically mapped to `C:\jdk17` for stability)
+* Python 3.11
+* Java 17 (Required for Spark 4.1.1)
 * Hadoop Home (`winutils.exe` in `C:\hadoop\bin`)
 
-### Environment Setup
+### Quick Start
 ```powershell
 conda env create -f environment.yml
 conda activate spark-project
+python src/utils/spark_utils.py
 ```
 
-### Windows Spark Fix
-To ensure stable communication between Python and the Java Gateway on Windows, the Spark Session is configured to bind to local loopback:
+### Windows-Specific Optimization
+To resolve the `JAVA_GATEWAY_EXITED` error and ensure stable communication on Windows, the Spark Session uses forced loopback binding:
+
+
 
 ```python
 from pyspark.sql import SparkSession
@@ -79,14 +91,14 @@ spark = SparkSession.builder \
 ---
 
 ## 📊 Analytics & Reporting
-The pipeline produces rich artifacts stored in the `reports/` directory:
-* **Figures:** Visualization of time-series forecasts and feature correlations.
-* **HTML Reports:** Comprehensive data audits that identify drift, skewness, and cardinality issues before the data enters the warehouse.
+The pipeline automatically populates the `reports/` directory:
+* **Automated Audits:** `reports/html/` contains interactive profiling and data validation results from Great Expectations.
+* **Forecasting Visuals:** `reports/figures/` stores trend analysis generated by Prophet and Seaborn.
 
 ---
 
 ## 🎓 Skills Demonstrated
-* **Data Engineering:** ETL design, Dimensional Modeling (Kimball), Parquet optimization.
-* **Big Data:** Spark Session management, Py4J Gateway troubleshooting.
-* **DevOps:** Environment isolation, multi-framework configuration management.
-* **Analytics:** Time-series decomposition and statistical profiling.
+* **Data Engineering:** Star Schema design, ETL orchestration, and **Parquet/Delta Lake** optimization.
+* **Scalable Analytics:** Distributed computing with PySpark and lazy evaluation tuning.
+* **Data Governance:** Validating data integrity using **Great Expectations**.
+* **Forecasting:** Building scalable time-series models for business intelligence.
